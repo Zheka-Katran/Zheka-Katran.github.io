@@ -1,0 +1,146 @@
+.menu-wrap{
+ width: 100%;
+ display: table;
+ background: #f8a93d;
+}
+
+.menu {  
+ list-style: none;
+ padding: 0;
+ margin: 0; 
+ font-family: inherit;
+ font-size: 14px;
+ z-index: 4;
+ position: relative;
+ display: table-row;
+
+}
+.menu li{
+ position:relative; 
+ display: table-cell;
+ float: none;
+ margin: 0;
+ text-align: center; 
+ border-right: 1px solid #80DF95;
+}
+
+.menu li:last-child {
+ border: 0 none; 
+}
+
+.menu li a {
+ display: block;
+ color: #fdfdfd;
+ text-decoration: none;
+ padding: 12px 20px 12px 20px; 
+}
+
+.menu li:hover { 
+ background: #ffbf65;
+}
+
+
+.menu li ul li {        
+ float:none;       
+ width:250px;   
+ display: block;
+ background: #000;
+ margin: 0;
+ padding: 0;
+ text-align: left;
+ border: 0 none;
+}
+
+
+.menu li ul li a {
+ color: #f7f7f7;
+ padding: 10px;
+ border-bottom: 1px solid #333;
+}
+
+.menu li ul li:hover { 
+ background:#000;
+ text-decoration: underline;
+ color: #f7f7f7;
+}
+
+.menu li ul li ul li:hover { 
+ background:#000;
+ text-decoration: underline; 
+}
+
+.menu li ul li ul {        
+ margin-left: 2px;
+}
+
+.menu li ul{
+ display:none;
+ position:absolute;
+ background-color:#4d2001;
+ list-style:none;
+ padding:0;
+ z-index: 5;
+}
+.menu li:hover ul{   
+ display:block; 
+}
+
+.menu li ul li ul,      
+.menu  li:hover ul li ul{    
+ display:none;
+ position:absolute;
+ left:250px;
+ top:0;
+}
+
+.menu li ul li:hover ul{
+ display:block;
+}
+
+.menu li:hover a {
+ color: #f7f7f7;
+}
+
+.menu li:hover > ul li a {
+ color: #f7f7f7;
+}
+
+.menu li > a:after { 
+ color: #f7f7f7;
+ content: ' ▾';
+ font-size: 16px;
+} 
+
+.menu li > a:only-child:after {
+ content: '';
+}   
+
+.menu li ul li > a:after {
+ color: #f7f7f7;
+ content: '';
+} 
+
+.menu li:hover > a:after {
+ content: ' ▾';
+ color: #000;
+ font-size: 16px;
+}
+ 
+.menu li:hover > a:only-child:after {
+ content: '';
+}   
+
+.menu li ul li:hover > a:after {
+ content: '';
+} 
+
+.menu ul ul li:first-child > a:after {
+ position: absolute;
+ left: -6px;
+ top: 50%;
+ margin-top: -6px;
+ border-left: 0; 
+ border-bottom: 6px solid transparent;
+ border-top: 6px solid transparent;
+ border-right: 6px solid #fff;
+} 

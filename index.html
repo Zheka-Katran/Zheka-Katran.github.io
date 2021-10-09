@@ -1,145 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Gamedev Phaser Workshop</title>
-    <style>* { padding: 0; margin: 0; }</style>
-    <script src="js/phaser.min.js"></script>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>BeautyDone</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' media='screen' href='assets/css/main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='assets/css/menu.css'>
+    <script src='assets/js/main.js'></script>
 </head>
 <body>
-<script>
-var game = new Phaser.Game(480, 320, Phaser.AUTO, null, {preload: preload, create: create, update: update});
-
-var ball;
-var paddle;
-var bricks;
-var newBrick;
-var brickInfo;
-var scoreText;
-var score = 0;
-var lives = 3;
-var livesText;
-var lifeLostText;
-var playing = false;
-var startButton;
-
-function preload() {
-    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    game.scale.pageAlignHorizontally = true;
-    game.scale.pageAlignVertically = true;
-    game.stage.backgroundColor = '#eee';
-    game.load.image('ball', 'img/ball.png');
-    game.load.image('paddle', 'img/paddle.png');
-    game.load.image('brick', 'img/brick.png');
-    game.load.spritesheet('ball','img/wobble.png',20,20);
-    game.load.spritesheet('button', 'img/button.png', 120, 40);
-}
-function create() {
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.physics.arcade.checkCollision.down = false;
-    ball = game.add.sprite(game.world.width*0.5, game.world.height-25, 'ball');
-    ball.animations.add('wobble', [0,1,0,2,0,1,0,2,0], 24);
-    ball.anchor.set(0.5);
-    game.physics.enable(ball, Phaser.Physics.ARCADE);
-    ball.body.collideWorldBounds = true;
-    ball.body.bounce.set(1);
-    ball.checkWorldBounds = true;
-    ball.events.onOutOfBounds.add(ballLeaveScreen, this);
-
-    paddle = game.add.sprite(game.world.width*0.5, game.world.height-5, 'paddle');
-    paddle.anchor.set(0.5,1);
-    game.physics.enable(paddle, Phaser.Physics.ARCADE);
-    paddle.body.immovable = true;
-
-    initBricks();
-
-    textStyle = { font: '18px Arial', fill: '#0095DD' };
-    scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
-    livesText = game.add.text(game.world.width-5, 5, 'Lives: '+lives, textStyle);
-    livesText.anchor.set(1,0);
-    lifeLostText = game.add.text(game.world.width*0.5, game.world.height*0.5, 'Life lost, tap to continue', textStyle);
-    lifeLostText.anchor.set(0.5);
-    lifeLostText.visible = false;
-
-    startButton = game.add.button(game.world.width*0.5, game.world.height*0.5, 'button', startGame, this, 1, 0, 2);
-    startButton.anchor.set(0.5);
-
-}
-function update() {
-    game.physics.arcade.collide(ball, paddle, ballHitPaddle);
-    game.physics.arcade.collide(ball, bricks, ballHitBrick);
-    if (playing){
-    paddle.x = game.input.x || game.world.width*0.5;
-  }
-}
-function initBricks() {
-    brickInfo = {
-        width: 50,
-        height: 20,
-        count: {
-            row: 7,
-            col: 3
-        },
-        offset: {
-            top: 50,
-            left: 60
-        },
-        padding: 10
-    }
-    bricks = game.add.group();
-    for(c=0; c<brickInfo.count.col; c++) {
-        for(r=0; r<brickInfo.count.row; r++) {
-            var brickX = (r*(brickInfo.width+brickInfo.padding))+brickInfo.offset.left;
-            var brickY = (c*(brickInfo.height+brickInfo.padding))+brickInfo.offset.top;
-            newBrick = game.add.sprite(brickX, brickY, 'brick');
-            game.physics.enable(newBrick, Phaser.Physics.ARCADE);
-            newBrick.body.immovable = true;
-            newBrick.anchor.set(0.5);
-            bricks.add(newBrick);
-        }
-    }
-}
-function ballHitBrick(ball, brick) {
-    var killTween = game.add.tween(brick.scale);
-    killTween.to({x:0,y:0}, 200, Phaser.Easing.Linear.None);
-    killTween.onComplete.addOnce(function(){
-      brick.kill();
-    }, this);
-    killTween.start();
-
-    score += 10;
-    scoreText.setText('Points: '+score);
-    if(score === brickInfo.count.row*brickInfo.count.col*10) {
-        alert('You won the game, congratulations!');
-        location.reload();
-    }
-}
-function ballLeaveScreen() {
-    lives--;
-    if(lives) {
-        livesText.setText('Lives: '+lives);
-        lifeLostText.visible = true;
-        ball.reset(game.world.width*0.5, game.world.height-25);
-        paddle.reset(game.world.width*0.5, game.world.height-5);
-        game.input.onDown.addOnce(function(){
-            lifeLostText.visible = false;
-            ball.body.velocity.set(150, -150);
-        }, this);
-    }
-    else {
-        alert('You lost, game over!');
-        location.reload();
-    }
-}
-  function ballHitPaddle(){
-    ball.animations.play('wobble');
-    ball.body.velocity.x = -1*5*(paddle.x-ball.x);
-  }
-  function startGame(){
-    startButton.destroy();
-    ball.body.velocity.set(150, -150);
-    playing = true;
-  }
-</script>
+    <section class="top-bar-wrapper">
+        <section class="top-bar">
+            <section class="top-bar-left">
+                <a href="#" class="top-bar-link">Условия заказа</a>
+                <a href="#" class="top-bar-link">Отзывы <span class="count-rewiews">164</span></a>
+            </section>
+            <section class="top-bar-right">
+                <img class="top-bar-social-link" src="#">
+                <img class="top-bar-social-link" src="#">
+            </section>
+        </section>
+    </section>
+    <section class="header-wrapper">
+        <section class="header">
+            <section class="header-col social-menu">
+                <p class="social-menu-content">
+                    Быстрый ответ: </br>
+                    онлайн чат или : telegram, viber
+                </p>
+                <p class="social-menu-schedule">ПН-ПТ 10:00 - 18:00</p>
+            </section>
+            <section class="header-col main-logo">
+                <img class="main-logo-img" src="assets/img/beauty-done-logo.png">
+            </section>
+            <section class="header-col search-col">
+                <form method="get" action="https://beautydone.com.ua/" class="header-searchform">
+                    <input type="search" name="s" autocomplete="off" value="" placeholder="Поиск...">
+                    <img class="main-search-icon" src="#">
+                </form>
+            </section>
+        </section>
+    </section>
+    <section class="menu-wrap">
+        <ul class="menu">
+            <li><a href="">НОВИНКИ</a></li>
+            <li><a href="">АКЦИИ</a></li>
+            <li><a href="">ТОВАРЫ</a>
+                <ul>
+                    <li>
+                        <a href="">Для лица</a>
+                        <ul>
+                            <li><a href="">Очищение</a></li>
+                            <li><a href="">Пилинг/Скрабы</a></li>
+                            <li><a href="">Маски</a></li>
+                            <li><a href="">Тонеры</a></li>
+                            <li><a href="">Эссенции</a></li>
+                            <li><a href="">Сыворотки</a></li>
+                            <li><a href="">Кремы для лица</a></li>
+                            <li><a href="">Средства для век</a></li>
+                            <li><a href="">Уход за губами</a></li>
+                            <li><a href="">SPF кремы</a></li>
+                            <li><a href="">Макияж</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">Для волос</a>
+                        <ul>
+                            <li><a href="">Шампуни</a></li>
+                            <li><a href="">Бальзамы/Кондиционеры</a></li>
+                            <li><a href="">Маски</a></li>
+                            <li><a href="">Дополнительные Средства Для Ухода За Волосами</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">Для тела</a>
+                        <ul>
+                            <li><a href="">Гели Для Душа</a></li>
+                            <li><a href="">Скрабы</a></li>
+                            <li><a href="">Кремы Для Тела</a></li>
+                            <li><a href="">Очищающие Пасты</a></li>
+                            <li><a href="">Другое</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="">Пробники и Миниатюры</a></li>
+                    <li><a href="">Подарочные Боксы</a></li>
+                    <li><a href="">CRISPYDONE Food</a></li>
+                </ul>
+            </li>
+            <li><a href="">УВЕДОМИТЬ ОБ ОПЛАТЕ</a></li>
+            <li><a href="">АККАУНТ</a>
+                <ul>
+                    <li><a href="">Профиль</a></li>
+                    <li><a href="">История Заказов</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
 </body>
 </html>
