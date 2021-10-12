@@ -57,17 +57,47 @@ body{
     outline: none;
     background-color: #f7c37b;
     border-radius: 10px;
-    padding: 6px 38px 6px 12px;
+    /* padding: 6px 38px 6px 12px; */
+    display: flex;
+    height: 50px;
+    margin-left: 20px;
+
+}
+
+.header-searchform img{
+    align-self: center;
+    height: 50%;
 }
 
 .header-searchform input{
     border: none;
     outline: none;
     background-color: #f7c37b;
-    font-size: 14px;
+    font-size: 14px;    
+    padding: 11px 5px;
+    border-radius: 10px;
 }
 
 input::-webkit-search-decoration,
 input::-webkit-search-cancel-button,
 input::-webkit-search-results-button,
 input::-webkit-search-results-decoration { display: none; }
+
+
+.wishlist-link-wrap{
+    display: flex;
+    align-content: center;
+    height: 100%;
+}
+
+.wishlist-link-img{
+    align-self: center;
+    height: 24px;
+}
+
+.wishlist-count-number{
+    color: white;
+    font-size: 14px;
+    margin-left: 4px;
+}
+

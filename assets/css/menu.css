@@ -1,18 +1,25 @@
 .menu-wrap{
  width: 100%;
- display: table;
+ display: flex;
+ justify-content: center;
+ align-items: center;
  background: #f8a93d;
+ height: 46px;
 }
 
 .menu {  
+ font-family: 'Montserrat', sans-serif;
+ font-weight: 600;
  list-style: none;
  padding: 0;
  margin: 0; 
- font-family: inherit;
- font-size: 14px;
+ font-size: 12px;
  z-index: 4;
  position: relative;
- display: table-row;
+ /* display: table-row; */
+ display: flex;
+ align-items: center;
+ height: 100%;
 
 }
 .menu li{
@@ -21,7 +28,8 @@
  float: none;
  margin: 0;
  text-align: center; 
- border-right: 1px solid #80DF95;
+ background: #f8a93d;
+ height: 100%;
 }
 
 .menu li:last-child {
@@ -44,7 +52,7 @@
  float:none;       
  width:250px;   
  display: block;
- background: #000;
+ background: #fdfdfd;
  margin: 0;
  padding: 0;
  text-align: left;
@@ -53,20 +61,21 @@
 
 
 .menu li ul li a {
- color: #f7f7f7;
- padding: 10px;
- border-bottom: 1px solid #333;
+    color: rgb(53, 53, 53) !important;
+ /* padding: 10px; */
+ border-bottom: 1px solid #f8a93d;
+ font-weight: 100;
 }
 
 .menu li ul li:hover { 
- background:#000;
- text-decoration: underline;
- color: #f7f7f7;
+ background:rgb(212, 212, 212);
+ /* text-decoration: underline; */
+ /* color: #f7f7f7; */
 }
 
 .menu li ul li ul li:hover { 
- background:#000;
- text-decoration: underline; 
+    background:rgb(212, 212, 212);
+ /* text-decoration: underline;  */
 }
 
 .menu li ul li ul {        
@@ -76,7 +85,7 @@
 .menu li ul{
  display:none;
  position:absolute;
- background-color:#4d2001;
+ /* background-color:#4d2001; */
  list-style:none;
  padding:0;
  z-index: 5;
@@ -122,7 +131,7 @@
 
 .menu li:hover > a:after {
  content: ' ▾';
- color: #000;
+ color: rgb(255, 255, 255);
  font-size: 16px;
 }
  
